@@ -1,66 +1,57 @@
-// sitzplan.js
+// Seating Planner Application Logic
 
-class SeatingZone {
-    constructor(name) {
-        this.name = name;
-        this.seats = [];
+class SeatingPlanner {
+    constructor(seatingChart) {
+        this.seatingChart = seatingChart;
+        this.seatedGuests = {};
     }
 
-    addSeat(seat) {
-        this.seats.push(seat);
+    seatGuest(guestName, seatNumber) {
+        if (this.seatedGuests[guestName]) {
+            console.log(`${guestName} is already seated.`);
+            return false;
+        }
+        if (this.seatingChart[seatNumber]) {
+            console.log(`${guestName} has been seated at ${seatNumber}.`);
+            this.seatedGuests[guestName] = seatNumber;
+            return true;
+        } else {
+            console.log(`Seat ${seatNumber} is not available.`);
+            return false;
+        }
     }
 
-    getAvailableSeats() {
-        return this.seats.filter(seat => !seat.isOccupied);
-    }
-}
-
-class Seat {
-    constructor(id) {
-        this.id = id;
-        this.isOccupied = false;
-    }
-
-    occupy() {
-        this.isOccupied = true;
+    removeGuest(guestName) {
+        if (this.seatedGuests[guestName]) {
+            const seatNumber = this.seatedGuests[guestName];
+            delete this.seatedGuests[guestName];
+            console.log(`${guestName} has been removed from seat ${seatNumber}.`);
+            return true;
+        } else {
+            console.log(`${guestName} is not seated.`);
+            return false;
+        }
     }
 
-    vacate() {
-        this.isOccupied = false;
-    }
-}
-
-class SeatingConfiguration {
-    constructor() {
-        this.zones = [];
-    }
-
-    addZone(zone) {
-        this.zones.push(zone);
-    }
-
-    getAllAvailableSeats() {
-        return this.zones.reduce((availableSeats, zone) => 
-            availableSeats.concat(zone.getAvailableSeats()), []);
+    displaySeatedGuests() {
+        console.log("Seated Guests:");
+        for (let guest in this.seatedGuests) {
+            console.log(`${guest}: ${this.seatedGuests[guest]}`);
+        }
     }
 }
 
-// Sample Interactive Functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const config = new SeatingConfiguration();
+// Example usage:
+const seatingChart = {
+    'A1': true,
+    'A2': true,
+    'B1': true,
+    'B2': true
+};
 
-    // Example of creating zones and seats
-    const zoneA = new SeatingZone('Zone A');
-    zoneA.addSeat(new Seat(1));
-    zoneA.addSeat(new Seat(2));
-
-    const zoneB = new SeatingZone('Zone B');
-    zoneB.addSeat(new Seat(3));
-    zoneB.addSeat(new Seat(4));
-
-    config.addZone(zoneA);
-    config.addZone(zoneB);
-
-    // Display available seats
-    console.log('Available Seats:', config.getAllAvailableSeats());
-});
+const planner = new SeatingPlanner(seatingChart);
+planner.seatGuest('John Doe', 'A1');
+planner.seatGuest('Jane Smith', 'A2');
+planner.displaySeatedGuests();
+planner.removeGuest('John Doe');
+planner.displaySeatedGuests();
