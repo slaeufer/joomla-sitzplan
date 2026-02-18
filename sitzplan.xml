@@ -8,7 +8,9 @@
 	<authorEmail>info@example.com</authorEmail>
 	<version>1.0.0</version>
 	<description>COM_SITZPLAN_DESCRIPTION</description>
+
 	<scriptfile>script.php</scriptfile>
+
 	<administration>
 		<menu>COM_SITZPLAN</menu>
 		<files folder="admin">
@@ -16,28 +18,21 @@
 			<filename>controller.php</filename>
 			<folder>views</folder>
 			<folder>models</folder>
-			<folder>tables</folder>
+			<folder>language</folder>
 			<folder>sql</folder>
+			<folder>assets</folder>
 		</files>
-		<languages folder="admin/language">
-			<language tag="de-DE">de-DE/com_sitzplan.ini</language>
-			<language tag="de-DE">de-DE/com_sitzplan.sys.ini</language>
-			<language tag="en-GB">en-GB/com_sitzplan.ini</language>
-		</languages>
 	</administration>
+
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8mb4">sql/mysql/install.sql</file>
 		</sql>
 	</install>
+
 	<uninstall>
 		<sql>
 			<file driver="mysql" charset="utf8mb4">sql/mysql/uninstall.sql</file>
 		</sql>
 	</uninstall>
-	<update>
-		<schemas>
-			<schemapath type="mysql">sql/mysql</schemapath>
-		</schemas>
-	</update>
 </extension>
