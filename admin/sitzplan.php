@@ -1,14 +1,13 @@
 <?php
-// admin/sitzplan.php
-// This file serves as the main entry point for the admin component of the Joomla Sitzplan application.
-
 defined('_JEXEC') or die;
 
-// Load the necessary framework
-require_once JPATH_COMPONENT . '/helpers/sitzplan.php';
+use Joomla\CMS\Factory;
 
-// Get the task from the request
-$task = JFactory::getApplication()->input->getCmd('task', 'display');
+if (!Factory::getApplication()->getIdentity()->authorise('core.manage', 'com_sitzplan')) {
+    throw new \Exception('Access Denied', 403);
+}
 
-// Dispatch the task
-SitzplanHelper::executeTask($task);
+require_once JPATH_COMPONENT . '/controller.php';
+$controller = new SitzplanController();
+$controller->execute(Factory::getApplication()->input->get('task', 'display', 'cmd'));
+$controller->redirect();
